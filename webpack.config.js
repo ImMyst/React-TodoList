@@ -12,18 +12,21 @@ let config = {
     extensions: ['.js', '.ts', '.tsx']
   },
   module: {
-  rules: [
-    {
-      test: /\.tsx?/,
-      loader: 'ts-loader',
-      exclude: [/node_modules/]
-    },
-  ],
-  plugins: [
-    new webpack.DefinePlugin({
-      'process.env': {
-        NODE_ENV: JSON.stringify(process.env.NODE_ENV)
-      }
-    })
-  ]
-}
+    rules: [
+      {
+        test: /\.tsx?/,
+        loader: 'ts-loader',
+        exclude: [/node_modules/]
+      },
+    ],
+  },
+    plugins: [
+      new webpack.DefinePlugin({
+        'process.env': {
+          NODE_ENV: JSON.stringify(process.env.NODE_ENV)
+        }
+      })
+    ]
+  }
+
+  module.exports = config
