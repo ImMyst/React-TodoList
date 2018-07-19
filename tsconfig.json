@@ -1,0 +1,14 @@
+{
+  "files": [
+    "src/main.tsx"
+  ],
+  "compileOptions": {
+    "target": "es5",
+    "module": "es2015",
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "strict": true,
+    "allowJs": true
+  },
+  "exclude": ["node_modules"]
+}
