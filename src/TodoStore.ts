@@ -3,7 +3,7 @@ import {Todo} from './Interfaces'
 export default class TodoStore {
 
   private static i = 0
-  public todos: Todo[]
+  public todos: Todo[] = []
 
   static increment () {
     return this.i++
