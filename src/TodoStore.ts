@@ -21,8 +21,8 @@ export default class TodoStore {
     this.todos = this.todos.filter(t => t !== todo)
   }
 
-  toggleTodo (todo: Todo, completed = true): void {
-    this.todos = this.todos.map(t => t === todo ? { ...t, completed } : t)
+  toggleTodo (todo: Todo): void {
+    this.todos = this.todos.map(t => t === todo ? { ...t, completed: !t.completed } : t)
   }
 
   editTodo (todo: Todo, title: string): void {

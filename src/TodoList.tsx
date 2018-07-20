@@ -13,6 +13,7 @@ interface TodoListState {
 
 export default class TodoList extends React.Component<TodoListProps,TodoListState> {
   private store: TodoStore = new TodoStore()
+  private toggleTodo: (todo: Todo) => void
 
   constructor (props: TodoListProps) {
     super(props)
@@ -21,6 +22,7 @@ export default class TodoList extends React.Component<TodoListProps,TodoListStat
     this.state = {
       todos: this.store.todos
     }
+    this.toggleTodo = this.store.toggleTodo.bind(this.store)
   }
 
   render () {
@@ -36,7 +38,7 @@ export default class TodoList extends React.Component<TodoListProps,TodoListStat
         <label htmlFor="toggle-all">Mark all as complete</label>
         <ul className="todo-list">
           {todos.map(todo => {
-            return <TodoItem todo={todo} key={todo.id}/>
+            return <TodoItem todo={todo} key={todo.id} onToggle={this.store.toggleTodo}/>
           })}
         </ul>
       </section>
