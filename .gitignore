@@ -1,0 +1,7 @@
+# IntelliJ project files
+.idea/
+out
+gen
+
+# Node Modules
+node_modules
