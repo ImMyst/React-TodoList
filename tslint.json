@@ -5,7 +5,7 @@
       true,
       "single",
       "avoid-escape",
-      "jsx-single"
+      "jsx-double"
     ]
   }
 }
