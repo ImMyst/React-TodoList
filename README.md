@@ -17,7 +17,9 @@ This _**ToDo List**_ is done with **React** and **TypeScript** and is a small ex
 * Get the project : `git clone https://github.com/ImMyst/React-TodoList.git`
 * Install dependencies and packages : `cd React-TodoList && npm i -D`
 * Launch the project as development environment : `npm run dev`
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Or
 * Launch the project as production environment :  `npm run build`
+
 * **Enjoy** :tada: 
 
 ### About me
