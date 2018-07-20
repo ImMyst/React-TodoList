@@ -15,6 +15,11 @@ let config = {
     rules: [
       {
         test: /\.tsx?/,
+        loader: 'tslint-loader',
+        enforce: 'pre',
+        exclude: [/node_modules/]
+      },      {
+        test: /\.tsx?/,
         loader: 'ts-loader',
         exclude: [/node_modules/]
       },
