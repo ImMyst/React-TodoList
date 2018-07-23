@@ -32,6 +32,11 @@ export default class TodoList extends React.Component<TodoListProps,TodoListStat
     this.destroyTodo = this.store.removeTodo.bind(this.store)
   }
 
+  get remainCount (): number {
+    return this.state.todos.reduce((count, todo) => !todo.completed ? count +1 : count, 0)
+
+  }
+
   componentDidMount () {
     this.store.addTodo('Salut')
     this.store.addTodo('les potes')
@@ -41,12 +46,14 @@ export default class TodoList extends React.Component<TodoListProps,TodoListStat
     let {todos, newTodo} = this.state
 
     return <section className="todoapp">
+
       <header className="header">
         <h1>Todo List</h1>
         <input className="new-todo" placeholder="What needs to be done?" onInput={this.updateNewTodo} onKeyPress={this.addTodo} value={newTodo}/>
       </header>
+
       <section className="main">
-        <input className="toggle-all" type="checkbox" />
+        <input className="toggle-all" type="checkbox" checked = {this.remainCount === 0} onChange={this.toggle}/>
         <label htmlFor="toggle-all">Mark all as complete</label>
         <ul className="todo-list">
           {todos.map(todo => {
@@ -54,8 +61,9 @@ export default class TodoList extends React.Component<TodoListProps,TodoListStat
           })}
         </ul>
       </section>
+
       <footer className="footer">
-        <span className="todo-count"><strong>1</strong> item left</span>
+        {this.remainCount > 0 &&  <span className="todo-count"><strong>{this.remainCount}</strong> item{this.remainCount > 1 && 's'} left</span>}
         <ul className="filters">
           <li>
             <a href="#/" className="selected">All</a>
@@ -69,16 +77,22 @@ export default class TodoList extends React.Component<TodoListProps,TodoListStat
         </ul>
         <button className="clear-completed">Clear completed</button>
       </footer>
+
     </section>
   }
 
   updateNewTodo = (e: FormEvent<HTMLInputElement>) => {
     this.setState({newTodo: (e.target as HTMLInputElement).value})
   }
+
   addTodo = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       this.store.addTodo(this.state.newTodo)
       this.setState({newTodo: ''})
     }
+  }
+
+  toggle = (e: FormEvent<HTMLInputElement>) => {
+    this.store.toggleAll(this.remainCount > 0)
   }
 }
