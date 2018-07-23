@@ -17,12 +17,18 @@ export default class TodoList extends React.Component<TodoListProps,TodoListStat
 
   constructor (props: TodoListProps) {
     super(props)
+    this.state = {
+      todos: []
+    }
+    this.store.onChange((store )=> {
+      this.setState({todos: store.todos})
+    })
+    this.toggleTodo = this.store.toggleTodo.bind(this.store)
+  }
+
+  componentDidMount () {
     this.store.addTodo('Salut')
     this.store.addTodo('les potes')
-    this.state = {
-      todos: this.store.todos
-    }
-    this.toggleTodo = this.store.toggleTodo.bind(this.store)
   }
 
   render () {
@@ -38,7 +44,7 @@ export default class TodoList extends React.Component<TodoListProps,TodoListStat
         <label htmlFor="toggle-all">Mark all as complete</label>
         <ul className="todo-list">
           {todos.map(todo => {
-            return <TodoItem todo={todo} key={todo.id} onToggle={this.store.toggleTodo}/>
+            return <TodoItem todo={todo} key={todo.id} onToggle={this.toggleTodo}/>
           })}
         </ul>
       </section>

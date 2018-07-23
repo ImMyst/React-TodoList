@@ -17,7 +17,7 @@ export default class TodoItem extends React.Component<Props,State> {
     let { todo } = this.props
     return <li className={cx({completed: todo.completed})}>
       <div className="view">
-        <input className="toggle" type="checkbox" onChange={this.toggle}/>
+        <input className="toggle" type="checkbox" onChange={this.toggle} checked={todo.completed}/>
         <label>{todo.title}</label>
         <button className="destroy"></button>
       </div>
@@ -25,7 +25,7 @@ export default class TodoItem extends React.Component<Props,State> {
   }
 
   toggle = (e: ChangeEvent<HTMLInputElement>) => {
-    e.preventDefault()
+    // e.preventDefault()
     this.props.onToggle(this.props.todo)
   }
 }
