@@ -1,11 +1,11 @@
 import * as React from 'react'
 import { Todo } from './Interfaces'
 import * as cx from 'classnames'
-import {ChangeEvent} from 'react';
 
 interface Props {
   todo: Todo
   onToggle: (todo: Todo) => void
+  onDestroy: (todo: Todo) => void
 }
 
 interface State {
@@ -17,15 +17,17 @@ export default class TodoItem extends React.Component<Props,State> {
     let { todo } = this.props
     return <li className={cx({completed: todo.completed})}>
       <div className="view">
-        <input className="toggle" type="checkbox" onChange={this.toggle}/>
+        <input className="toggle" type="checkbox" onChange={this.toggle} checked={todo.completed}/>
         <label>{todo.title}</label>
-        <button className="destroy"></button>
+        <button className="destroy" onClick={this.destroy}></button>
       </div>
     </li>
   }
 
-  toggle = (e: ChangeEvent<HTMLInputElement>) => {
-    e.preventDefault()
+  toggle = () => {
     this.props.onToggle(this.props.todo)
+  }
+  destroy = () => {
+    this.props.onDestroy(this.props.todo)
   }
 }

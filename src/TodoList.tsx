@@ -2,48 +2,75 @@ import * as React from 'react'
 import TodoStore from './TodoStore'
 import {Todo} from './Interfaces';
 import TodoItem from './TodoItem';
+import {FormEvent, KeyboardEvent} from 'react';
+import {log} from 'util';
 
 interface TodoListProps {
 
 }
 
 interface TodoListState {
-  todos: Todo[]
+  todos: Todo[],
+  newTodo: string
 }
 
 export default class TodoList extends React.Component<TodoListProps,TodoListState> {
   private store: TodoStore = new TodoStore()
   private toggleTodo: (todo: Todo) => void
+  private destroyTodo: (todo: Todo) => void
+  private cleanTodo: () => void
 
   constructor (props: TodoListProps) {
     super(props)
-    this.store.addTodo('Salut')
-    this.store.addTodo('les potes')
     this.state = {
-      todos: this.store.todos
+      todos: [],
+      newTodo: ''
     }
+    this.store.onChange((store )=> {
+      this.setState({todos: store.todos})
+    })
     this.toggleTodo = this.store.toggleTodo.bind(this.store)
+    this.destroyTodo = this.store.removeTodo.bind(this.store)
+    this.cleanTodo = this.store.cleanTodo.bind(this.store)
+  }
+
+  get remainCount (): number {
+    return this.state.todos.reduce((count, todo) => !todo.completed ? count +1 : count, 0)
+  }
+
+  get completedCount (): number {
+    return this.state.todos.reduce((count, todo) => todo.completed ? count +1 : count, 0)
+  }
+
+  componentDidMount () {
+    this.store.addTodo('les potes')
+    this.store.addTodo('Salut')
   }
 
   render () {
-    let {todos} = this.state
+    let {todos, newTodo} = this.state
+    let remainCount = this.remainCount
+    let completedCount = this.completedCount
 
     return <section className="todoapp">
+
       <header className="header">
         <h1>Todo List</h1>
-        <input className="new-todo" placeholder="What needs to be done?" />
+        <input className="new-todo" placeholder="What needs to be done?" onInput={this.updateNewTodo} onKeyPress={this.addTodo} value={newTodo}/>
       </header>
+
       <section className="main">
-        <input className="toggle-all" type="checkbox" />
+        {todos.length >  0 && <input className="toggle-all" type="checkbox" checked = {this.remainCount === 0} onChange={this.toggle}/>}
         <label htmlFor="toggle-all">Mark all as complete</label>
         <ul className="todo-list">
           {todos.map(todo => {
-            return <TodoItem todo={todo} key={todo.id} onToggle={this.store.toggleTodo}/>
+            return <TodoItem todo={todo} key={todo.id} onToggle={this.toggleTodo} onDestroy={this.destroyTodo}/>
           })}
         </ul>
       </section>
+
       <footer className="footer">
-        <span className="todo-count"><strong>1</strong> item left</span>
+        {this.remainCount > 0 &&  <span className="todo-count"><strong>{this.remainCount}</strong> item{this.remainCount > 1 && 's'} left</span>}
         <ul className="filters">
           <li>
             <a href="#/" className="selected">All</a>
@@ -55,8 +82,24 @@ export default class TodoList extends React.Component<TodoListProps,TodoListStat
             <a href="#/completed" className="">Completed</a>
           </li>
         </ul>
-        <button className="clear-completed">Clear completed</button>
+        {completedCount > 0 && <button className="clear-completed" onClick={this.cleanTodo}>Clear completed</button>}
       </footer>
+
     </section>
+  }
+
+  updateNewTodo = (e: FormEvent<HTMLInputElement>) => {
+    this.setState({newTodo: (e.target as HTMLInputElement).value})
+  }
+
+  addTodo = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      this.store.addTodo(this.state.newTodo)
+      this.setState({newTodo: ''})
+    }
+  }
+
+  toggle = (e: FormEvent<HTMLInputElement>) => {
+    this.store.toggleAll(this.remainCount > 0)
   }
 }
