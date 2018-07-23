@@ -60,7 +60,7 @@ export default class TodoList extends React.Component<TodoListProps,TodoListStat
       </header>
 
       <section className="main">
-        <input className="toggle-all" type="checkbox" checked = {this.remainCount === 0} onChange={this.toggle}/>
+        {todos.length >  0 && <input className="toggle-all" type="checkbox" checked = {this.remainCount === 0} onChange={this.toggle}/>}
         <label htmlFor="toggle-all">Mark all as complete</label>
         <ul className="todo-list">
           {todos.map(todo => {
