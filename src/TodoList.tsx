@@ -14,6 +14,7 @@ interface TodoListState {
 export default class TodoList extends React.Component<TodoListProps,TodoListState> {
   private store: TodoStore = new TodoStore()
   private toggleTodo: (todo: Todo) => void
+  private destroyTodo: (todo: Todo) => void
 
   constructor (props: TodoListProps) {
     super(props)
@@ -24,6 +25,7 @@ export default class TodoList extends React.Component<TodoListProps,TodoListStat
       this.setState({todos: store.todos})
     })
     this.toggleTodo = this.store.toggleTodo.bind(this.store)
+    this.destroyTodo = this.store.removeTodo.bind(this.store)
   }
 
   componentDidMount () {
@@ -44,7 +46,7 @@ export default class TodoList extends React.Component<TodoListProps,TodoListStat
         <label htmlFor="toggle-all">Mark all as complete</label>
         <ul className="todo-list">
           {todos.map(todo => {
-            return <TodoItem todo={todo} key={todo.id} onToggle={this.toggleTodo}/>
+            return <TodoItem todo={todo} key={todo.id} onToggle={this.toggleTodo} onDestroy={this.destroyTodo}/>
           })}
         </ul>
       </section>
