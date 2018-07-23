@@ -2,13 +2,16 @@ import * as React from 'react'
 import TodoStore from './TodoStore'
 import {Todo} from './Interfaces';
 import TodoItem from './TodoItem';
+import {FormEvent, KeyboardEvent} from 'react';
+import {log} from 'util';
 
 interface TodoListProps {
 
 }
 
 interface TodoListState {
-  todos: Todo[]
+  todos: Todo[],
+  newTodo: string
 }
 
 export default class TodoList extends React.Component<TodoListProps,TodoListState> {
@@ -19,7 +22,8 @@ export default class TodoList extends React.Component<TodoListProps,TodoListStat
   constructor (props: TodoListProps) {
     super(props)
     this.state = {
-      todos: []
+      todos: [],
+      newTodo: ''
     }
     this.store.onChange((store )=> {
       this.setState({todos: store.todos})
@@ -34,12 +38,12 @@ export default class TodoList extends React.Component<TodoListProps,TodoListStat
   }
 
   render () {
-    let {todos} = this.state
+    let {todos, newTodo} = this.state
 
     return <section className="todoapp">
       <header className="header">
         <h1>Todo List</h1>
-        <input className="new-todo" placeholder="What needs to be done?" />
+        <input className="new-todo" placeholder="What needs to be done?" onInput={this.updateNewTodo} onKeyPress={this.addTodo} value={newTodo}/>
       </header>
       <section className="main">
         <input className="toggle-all" type="checkbox" />
@@ -66,5 +70,15 @@ export default class TodoList extends React.Component<TodoListProps,TodoListStat
         <button className="clear-completed">Clear completed</button>
       </footer>
     </section>
+  }
+
+  updateNewTodo = (e: FormEvent<HTMLInputElement>) => {
+    this.setState({newTodo: (e.target as HTMLInputElement).value})
+  }
+  addTodo = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      this.store.addTodo(this.state.newTodo)
+      this.setState({newTodo: ''})
+    }
   }
 }
