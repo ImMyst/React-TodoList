@@ -18,6 +18,7 @@ export default class TodoList extends React.Component<TodoListProps,TodoListStat
   private store: TodoStore = new TodoStore()
   private toggleTodo: (todo: Todo) => void
   private destroyTodo: (todo: Todo) => void
+  private cleanTodo: () => void
 
   constructor (props: TodoListProps) {
     super(props)
@@ -30,11 +31,15 @@ export default class TodoList extends React.Component<TodoListProps,TodoListStat
     })
     this.toggleTodo = this.store.toggleTodo.bind(this.store)
     this.destroyTodo = this.store.removeTodo.bind(this.store)
+    this.cleanTodo = this.store.cleanTodo.bind(this.store)
   }
 
   get remainCount (): number {
     return this.state.todos.reduce((count, todo) => !todo.completed ? count +1 : count, 0)
+  }
 
+  get completedCount (): number {
+    return this.state.todos.reduce((count, todo) => todo.completed ? count +1 : count, 0)
   }
 
   componentDidMount () {
@@ -44,6 +49,8 @@ export default class TodoList extends React.Component<TodoListProps,TodoListStat
 
   render () {
     let {todos, newTodo} = this.state
+    let remainCount = this.remainCount
+    let completedCount = this.completedCount
 
     return <section className="todoapp">
 
@@ -75,7 +82,7 @@ export default class TodoList extends React.Component<TodoListProps,TodoListStat
             <a href="#/completed" className="">Completed</a>
           </li>
         </ul>
-        <button className="clear-completed">Clear completed</button>
+        {completedCount > 0 && <button className="clear-completed" onClick={this.cleanTodo}>Clear completed</button>}
       </footer>
 
     </section>
