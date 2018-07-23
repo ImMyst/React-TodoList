@@ -38,8 +38,8 @@ export default class TodoList extends React.Component<TodoListProps,TodoListStat
   }
 
   componentDidMount () {
-    this.store.addTodo('Salut')
     this.store.addTodo('les potes')
+    this.store.addTodo('Salut')
   }
 
   render () {
