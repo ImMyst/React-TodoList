@@ -4,9 +4,9 @@ const webpack = require('webpack')
 let config = {
   entry: './src/main.tsx',
   output: {
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(__dirname, 'public'),
     filename: 'main.js',
-    publicPath: '/dist/'
+    publicPath: '/public/'
   },
   resolve: {
     extensions: ['.js', '.ts', '.tsx']
